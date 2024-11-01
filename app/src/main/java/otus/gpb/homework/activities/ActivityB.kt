@@ -1,5 +1,6 @@
 package otus.gpb.homework.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
@@ -18,6 +19,9 @@ class ActivityB : AppCompatActivity() {
             insets
         }
         val buttonOpenActivityC = findViewById<Button>(R.id.buttonOpenActivityC)
-        buttonOpenActivityC.setOnClickListener {  }
+        buttonOpenActivityC.setOnClickListener {
+            val intent = Intent(this, ActivityC::class.java)
+            startActivity(intent)
+        }
     }
 }

@@ -1,5 +1,6 @@
 package otus.gpb.homework.activities
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import androidx.activity.enableEdgeToEdge
@@ -22,9 +23,22 @@ class ActivityC : AppCompatActivity() {
         val buttonCloseActivityC = findViewById<Button>(R.id.buttonCloseActivityC)
         val buttonCloseStack = findViewById<Button>(R.id.CloseStack)
 
-        buttonOpenActivityA.setOnClickListener { }
-        buttonOpenActivityD.setOnClickListener { }
-        buttonCloseActivityC.setOnClickListener { }
-        buttonCloseStack.setOnClickListener { }
+        buttonOpenActivityA.setOnClickListener {
+            val intent = Intent(this, ActivityA::class.java)
+            startActivity(intent)
+        }
+        buttonOpenActivityD.setOnClickListener {
+            val intent = Intent(this, ActivityD::class.java)
+            finishAffinity()
+            this.startActivity(intent);
+        }
+
+        buttonCloseActivityC.setOnClickListener {
+            finish()
+        }
+        buttonCloseStack.setOnClickListener {
+            finishAffinity()
+        }
     }
 }
+
