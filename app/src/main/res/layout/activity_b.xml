@@ -8,7 +8,7 @@
     tools:context=".ActivityB">
 
     <Button
-        android:id="@+id/buttonOpenActivityc"
+        android:id="@+id/buttonOpenActivityC"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Open ActivityC"
@@ -17,6 +17,7 @@
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        app:layout_constraintVertical_bias="0.5"
+        />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
