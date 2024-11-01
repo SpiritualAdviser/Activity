@@ -5,18 +5,12 @@
     android:id="@+id/main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#f44336"
-    tools:context=".ActivityA">
+    android:background="@color/activityABg"
+    tools:context="ActivityA">
 
     <Button
         android:id="@+id/buttonOpenActivityB"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Open ActivityB"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.5"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.5" />
+        style="@style/ButtonOnCenter"
+        android:text="@string/ButtonOpenActivityB"
+        />
 </androidx.constraintlayout.widget.ConstraintLayout>
