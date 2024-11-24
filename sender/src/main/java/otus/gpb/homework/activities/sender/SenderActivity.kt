@@ -1,10 +1,8 @@
 package otus.gpb.homework.activities.sender
 
 import android.content.Intent
-import android.icu.util.ULocale
 import android.net.Uri
 import android.os.Bundle
-import android.view.View
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -44,13 +42,11 @@ class SenderActivity : AppCompatActivity() {
 
     fun openReceiver() {
 
-        val intentReceiver = Intent(this, ReceiverActivity
+        val intentReceiver = Intent(Intent.ACTION_SEND).apply {
+            addCategory(Intent.CATEGORY_DEFAULT)
+            setType("text/plain")
+        }
 
-        )
         startActivity(intentReceiver)
-
-//        action = Action.SEND
-//        type = “text/plain”
-//        category = Category.DEFAULT
     }
 }
