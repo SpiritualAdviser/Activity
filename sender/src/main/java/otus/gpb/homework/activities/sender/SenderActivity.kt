@@ -22,15 +22,24 @@ class SenderActivity : AppCompatActivity() {
         }
     }
 
-    fun toGoogleMaps(view: View) {
+    fun toGoogleMaps() {
 
-        val intent = Intent(
+        val intentGoogleMaps = Intent(
             Intent.ACTION_VIEW,
             Uri.parse("geo:0,0?q=restaurants")
         ).setPackage("com.google.android.apps.maps")
-        startActivity(intent)
+        startActivity(intentGoogleMaps)
     }
 
-    fun sendEmail(view: View) {}
-    fun openReceiver(view: View) {}
+    fun sendEmail() {
+
+        val intentMail = Intent(
+            Intent.ACTION_VIEW,
+            Uri.parse("mailto:android@otus.ru")
+        ).putExtra(Intent.EXTRA_SUBJECT, "homework")
+            .putExtra(Intent.EXTRA_TEXT, "Send feedback")
+        startActivity(intentMail)
+    }
+
+    fun openReceiver() {}
 }
