@@ -1,6 +1,7 @@
 package otus.gpb.homework.activities.sender
 
 import android.content.Intent
+import android.icu.util.ULocale
 import android.net.Uri
 import android.os.Bundle
 import android.view.View
@@ -41,5 +42,15 @@ class SenderActivity : AppCompatActivity() {
         startActivity(intentMail)
     }
 
-    fun openReceiver() {}
+    fun openReceiver() {
+
+        val intentReceiver = Intent(this, ReceiverActivity
+
+        )
+        startActivity(intentReceiver)
+
+//        action = Action.SEND
+//        type = “text/plain”
+//        category = Category.DEFAULT
+    }
 }
