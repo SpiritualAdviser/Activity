@@ -3,6 +3,7 @@ package otus.gpb.homework.activities.sender
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Button
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.ViewCompat
@@ -19,9 +20,22 @@ class SenderActivity : AppCompatActivity() {
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
             insets
         }
+        val bundle = getBundle(Payload())
+
+        findViewById<Button>(R.id.toGoogleMaps).setOnClickListener { toGoogleMaps() }
+        findViewById<Button>(R.id.sendEmail).setOnClickListener { sendEmail() }
+        findViewById<Button>(R.id.openReceiver).setOnClickListener { openReceiver(bundle) }
     }
 
-    fun toGoogleMaps() {
+    private fun getBundle(data: Payload): Bundle {
+        val bundle = Bundle()
+        bundle.putString("title", data.title)
+        bundle.putString("year", data.year)
+        bundle.putString("description", data.description)
+        return bundle
+    }
+
+    private fun toGoogleMaps() {
 
         val intentGoogleMaps = Intent(
             Intent.ACTION_VIEW,
@@ -30,7 +44,7 @@ class SenderActivity : AppCompatActivity() {
         startActivity(intentGoogleMaps)
     }
 
-    fun sendEmail() {
+    private fun sendEmail() {
 
         val intentMail = Intent(
             Intent.ACTION_VIEW,
@@ -40,13 +54,13 @@ class SenderActivity : AppCompatActivity() {
         startActivity(intentMail)
     }
 
-    fun openReceiver() {
+    private fun openReceiver(bundle: Bundle) {
 
         val intentReceiver = Intent(Intent.ACTION_SEND).apply {
             addCategory(Intent.CATEGORY_DEFAULT)
             setType("text/plain")
+            putExtras(bundle)
         }
-
         startActivity(intentReceiver)
     }
 }
