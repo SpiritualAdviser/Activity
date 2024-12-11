@@ -5,7 +5,9 @@ import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
+import android.widget.Button
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -13,8 +15,22 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
 
+
     private lateinit var imageView: ImageView
     private var cameraAccessTime = 0
+
+    private val launcher = registerForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+
+        val name = result.data?.extras?.getString("name", "Default")
+        val surname = result.data?.extras?.getString("surname", "Default")
+        val age = result.data?.extras?.getString("age", "Default")
+
+        findViewById<TextView>(R.id.textview_name).text = name
+        findViewById<TextView>(R.id.textview_surname).text = surname
+        findViewById<TextView>(R.id.textview_age).text = age
+    }
 
     val takeImageUri = registerForActivityResult(
         ActivityResultContracts.GetContent()
@@ -54,6 +70,9 @@ class EditProfileActivity : AppCompatActivity() {
         setContentView(R.layout.activity_edit_profile)
         imageView = findViewById(R.id.imageview_photo)
 
+        findViewById<Button>(R.id.buttonEditProfile).setOnClickListener {
+            openFillFormActivity()
+        }
         imageView.setOnClickListener {
             showAlertDialog()
         }
@@ -66,6 +85,7 @@ class EditProfileActivity : AppCompatActivity() {
                         openSenderApp()
                         true
                     }
+
                     else -> false
                 }
             }
@@ -114,6 +134,10 @@ class EditProfileActivity : AppCompatActivity() {
         val dialogIntent = Intent(android.provider.Settings.ACTION_SETTINGS)
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(dialogIntent)
+    }
+
+    fun openFillFormActivity() {
+        launcher.launch(Intent(this, FillFormActivity::class.java))
     }
 
     /**
