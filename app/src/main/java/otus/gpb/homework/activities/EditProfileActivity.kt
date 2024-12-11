@@ -16,21 +16,31 @@ class EditProfileActivity : AppCompatActivity() {
     private lateinit var imageView: ImageView
     private var cameraAccessTime = 0
 
-    var permissionCameraStatus = registerForActivityResult(
+    val takeImageUri = registerForActivityResult(
+        ActivityResultContracts.GetContent()
+    ) { uri ->
+        if (uri != null) {
+            populateImage(uri)
+        }
+    }
+
+    val permissionCameraStatus = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
     ) { granted ->
         when {
             granted -> {
                 imageView.setImageResource(R.drawable.cat)
             }
+
             else -> {
 
                 when (cameraAccessTime) {
-                    0-> ++cameraAccessTime
+                    0 -> ++cameraAccessTime
                     1 -> {
                         ++cameraAccessTime
                         showRationaleDialog()
                     }
+
                     else -> if (cameraAccessTime >= 2) {
                         showOpenSettingsDialog()
                     }
@@ -56,7 +66,6 @@ class EditProfileActivity : AppCompatActivity() {
                         openSenderApp()
                         true
                     }
-
                     else -> false
                 }
             }
@@ -69,7 +78,11 @@ class EditProfileActivity : AppCompatActivity() {
             setTitle("Take a picture")
             setSingleChoiceItems(choosingActions, -1) { dialog, item ->
                 when (item) {
-                    0 -> requestCameraPermission()
+                    0 -> permissionCameraStatus.launch(
+                        Manifest.permission.CAMERA
+                    )
+
+                    1 -> takeImageUri.launch(input = "image/*")
                 }
             }.show()
         }
@@ -79,7 +92,11 @@ class EditProfileActivity : AppCompatActivity() {
 
         MaterialAlertDialogBuilder(this).apply {
             setMessage("The camera should take a picture")
-            setPositiveButton("Дать доступ") { dialog, which -> requestCameraPermission() }
+            setPositiveButton("Дать доступ") { dialog, which ->
+                permissionCameraStatus.launch(
+                    Manifest.permission.CAMERA
+                )
+            }
             setNegativeButton("Отмена") { dialog, which -> return@setNegativeButton }.show()
         }
     }
@@ -97,12 +114,6 @@ class EditProfileActivity : AppCompatActivity() {
         val dialogIntent = Intent(android.provider.Settings.ACTION_SETTINGS)
         dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(dialogIntent)
-    }
-
-
-    fun requestCameraPermission() {
-        permissionCameraStatus.launch(Manifest.permission.CAMERA)
-        println()
     }
 
     /**
