@@ -15,7 +15,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 
 class EditProfileActivity : AppCompatActivity() {
 
-
     private lateinit var imageView: ImageView
     private var cameraAccessTime = 0
 
@@ -145,10 +144,25 @@ class EditProfileActivity : AppCompatActivity() {
      */
     private fun populateImage(uri: Uri) {
         val bitmap = BitmapFactory.decodeStream(contentResolver.openInputStream(uri))
+        imageView.tag = uri
         imageView.setImageBitmap(bitmap)
     }
 
     private fun openSenderApp() {
-        TODO("В качестве реализации метода отправьте неявный Intent чтобы поделиться профилем. В качестве extras передайте заполненные строки и картинку")
+        val textviewName = findViewById<TextView>(R.id.textview_name)
+        val textviewSurname = findViewById<TextView>(R.id.textview_surname)
+        val textviewAge = findViewById<TextView>(R.id.textview_age)
+        val uriToImage = imageView.tag.toString()
+
+        val telegramIntent = Intent(Intent.ACTION_SEND).apply {
+            type = "image/*"
+            `package` = "org.telegram.messenger"
+            putExtra(Intent.EXTRA_STREAM, uriToImage)
+            putExtra(
+                Intent.EXTRA_TEXT,
+                "Name: ${textviewName.text} Surname: ${textviewSurname.text} Age: ${textviewAge.text}"
+            )
+        }
+        startActivity(telegramIntent)
     }
 }
