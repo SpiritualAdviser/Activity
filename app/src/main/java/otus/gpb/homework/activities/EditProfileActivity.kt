@@ -1,6 +1,7 @@
 package otus.gpb.homework.activities
 
 import android.Manifest
+import android.content.Intent
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.Bundle
@@ -13,6 +14,7 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 class EditProfileActivity : AppCompatActivity() {
 
     private lateinit var imageView: ImageView
+    private var cameraAccessTime = 0
 
     var permissionCameraStatus = registerForActivityResult(
         ActivityResultContracts.RequestPermission()
@@ -21,14 +23,20 @@ class EditProfileActivity : AppCompatActivity() {
             granted -> {
                 imageView.setImageResource(R.drawable.cat)
             }
-
             else -> {
 
+                when (cameraAccessTime) {
+                    0-> ++cameraAccessTime
+                    1 -> {
+                        ++cameraAccessTime
+                        showRationaleDialog()
+                    }
+                    else -> if (cameraAccessTime >= 2) {
+                        showOpenSettingsDialog()
+                    }
+                }
             }
-
-
         }
-
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -66,6 +74,31 @@ class EditProfileActivity : AppCompatActivity() {
             }.show()
         }
     }
+
+    private fun showRationaleDialog() {
+
+        MaterialAlertDialogBuilder(this).apply {
+            setMessage("The camera should take a picture")
+            setPositiveButton("Дать доступ") { dialog, which -> requestCameraPermission() }
+            setNegativeButton("Отмена") { dialog, which -> return@setNegativeButton }.show()
+        }
+    }
+
+    private fun showOpenSettingsDialog() {
+
+        MaterialAlertDialogBuilder(this).apply {
+            setPositiveButton("Открыть настройки") { dialog, which ->
+                openAppSettings()
+            }.show()
+        }
+    }
+
+    fun openAppSettings() {
+        val dialogIntent = Intent(android.provider.Settings.ACTION_SETTINGS)
+        dialogIntent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        startActivity(dialogIntent)
+    }
+
 
     fun requestCameraPermission() {
         permissionCameraStatus.launch(Manifest.permission.CAMERA)
